@@ -13,7 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
 // Responde a mensagem com LLM e envia para o index.php
 function callGroqApi($message)
 {
-    $apiKey = "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";
+    $config = parse_ini_file(__DIR__ . '/.env');
+    $key = $config['API_KEY'];
+
+    $apiKey = $key;
     $apiUrl = "https://api.groq.com/openai/v1/chat/completions";
 
 
