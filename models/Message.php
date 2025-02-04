@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 class Message
 {
     private $url;
@@ -19,5 +20,20 @@ class Message
         } else {
             header("Location: " . $_SERVER["HTTP_REFERER"]);
         }
+    }
+
+    public function getMessage()
+    {
+        if (isset($_SESSION["msg"])) {
+            return $_SESSION["msg"];
+        } else {
+            return "";
+        }
+    }
+
+    public function clearMessage()
+    {
+        unset($_SESSION["msg"]);
+        unset($_SESSION["type"]);
     }
 }

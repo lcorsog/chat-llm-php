@@ -1,10 +1,22 @@
 <?php
-include_once("message_process.php");
-include_once("globals.php");
+require_once("globals.php");
+require_once("models/Message.php");
+require_once("dao/UserDAO.php");
+require_once("helpers/db.php");
 
-$message = $_SESSION['message'] ?? "";
+$message = new Message($BASE_URL);
 
-$llmMessage = callGroqApi($message);
+$flashMessage = $message->getMessage();
+
+if ($flashMessage != "") {
+    $message->clearMessage();
+}
+
+
+$userDao = new UserDAO($conn, $BASE_URL);
+$userData = $userDao->verifyToken(false);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -19,15 +31,20 @@ $llmMessage = callGroqApi($message);
 </head>
 
 <body>
-    <nav class="flex bg-blue-500 text-white mb-4 p-4">
+    <nav class="flex bg-blue-500 text-white p-4">
         <div>
             <div class="flex flex-row items-center">
                 <h1 class="text-3xl font-bold">Groq</h1>
             </div>
         </div>
         <div class="flex flex-row items-center ml-auto space-x-4">
-            <a href="<?= $BASE_URL ?>index.php" class="text-white hover:text-gray-200">Home</a>
-            <a href="<?= $BASE_URL ?>sandbox.php" class="text-white hover:text-gray-200">Sandbox</a>
-            <a href="<?= $BASE_URL ?>login.php" class="text-white hover:text-gray-200">Login</a>
+            <?php if ($userData): ?>
+                <a href="<?= $BASE_URL ?>index.php" class="text-white hover:text-gray-200">Home</a>
+                <a href="<?= $BASE_URL ?>sandbox.php" class="text-white hover:text-gray-200">Sandbox</a>
+                <a href="<?= $BASE_URL ?>profile.php" class="text-white hover:text-gray-200"><?= $userData->name ?></a>
+            <?php else: ?>
+                <a href="<?= $BASE_URL ?>index.php" class="text-white hover:text-gray-200">Home</a>
+                <a href="<?= $BASE_URL ?>register.php" class="text-white hover:text-gray-200">Cadastrar</a>
+            <?php endif; ?>
         </div>
     </nav>

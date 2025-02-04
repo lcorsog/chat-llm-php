@@ -1,4 +1,11 @@
-<?php include_once("templates/header.php")
+<?php
+include_once("templates/header.php");
+include_once("message_process.php");
+
+
+$message = $_SESSION['message'] ?? "";
+
+$llmMessage = callGroqApi($message);
 ?>
 
 
