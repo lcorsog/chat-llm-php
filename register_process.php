@@ -11,11 +11,15 @@ $userDao = new UserDAO($conn, $BASE_URL);
 $type = filter_input(INPUT_POST, "type");
 
 if ($type == "login") {
+
     $email = filter_input(INPUT_POST, "email");
     $password = filter_input(INPUT_POST, "password");
-
     $user = $userDao->authenticateUser($email, $password);
-    $message->setMessage("login efetuado com sucesso", "success", "index.php");
+    if ($user = $userDao->authenticateUser($email, $password)) {
+        $message->setMessage("login efetuado com sucesso", "success", "index.php");
+    } else {
+        $message->setMessage("login falhou", "error", "back");
+    }
 } else if ($type == "register") {
     $name = filter_input(INPUT_POST, "name");
     $surname = filter_input(INPUT_POST, "surname");

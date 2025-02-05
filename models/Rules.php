@@ -11,7 +11,8 @@ class Rules
 interface RulesDAOInterface
 {
     public function buildRules($data);
+    public function getRulesByUserId($user_id);
     // TODO: Implementar o segundo parametro $authUser
-    public function create(Rules $rules, $ruleName);
-    public function update(Rules $rules, $redirect = true);
+    public function create(Rules $rules);
+    public function update(Rules $rules);
 }

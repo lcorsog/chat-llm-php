@@ -1,8 +1,11 @@
 <?php
 
-session_start();
+require_once("dao/RulesDAO.php");
+require_once("dao/UserDAO.php");
+require_once("globals.php");
 
-$message = "";
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
     $message = $_POST['message'];
     $_SESSION['message'] = $message;
@@ -10,8 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
 }
 
 
+
 // Responde a mensagem com LLM e envia para o index.php
-function callGroqApi($message)
+function callGroqApi($message, $rule)
 {
     $config = parse_ini_file(__DIR__ . '/.env');
     $key = $config['API_KEY'];
@@ -31,17 +35,7 @@ function callGroqApi($message)
             ],
             [
                 "role" => "system",
-                "content" => "Você trabalha em uma empresa de rastreamento veicular, e precisa responder a perguntas sobre o histórico de um veículo. Você deve responder em português. Se você não sabe uma resposta, responda que você não sabe. Se você não tem informações suficientes, responda que você não tem informações suficientes. Você pode usar apenas informações fornecidas. Não faça perguntas que não estejam relacionadas ao histórico do veículo. 
-                A empresa é focada no rastreamento de motos e carros, não fazemos rastreamento de caminhões e bicicletas. Nosso plano custa R$29,90 por mês, e somente aceitamos pagamento no cartão. Você deve apenas responder o que foi perguntado, não fique falando informações a mais. Na apresentação, fale brevemente da empresa, e nada mais
-                Caso a pessoa peça a segunda via do boleto, envie para ela o link https://www.groq.com/boletos-veiculos-e-motos
-                Caso o cliente tenha interesse em comprar o serviço, envia para ele o link https://comprar.groq.com?
-                // Mensagem de boas vindas (usar mensagem sempre que indicar que uma conversa foi iniciado sem contexto específico já definido): Seja bem vindo a tracfy, somos a melhor do sul. Meu nome é luis, como posso te ajudar hj?
-                caso o cliente queira conversar com um atendente, coloque uma flag nele e mande uma mensagem para 43984162447. Se o cliente o cpf obtenha via.
-                ## Se  for 123:
-                    ola mistrello
-                ## Se for 321:
-                    ola luis
-                "
+                "content" => $rule
             ]
         ],
     ];

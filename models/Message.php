@@ -24,8 +24,8 @@ class Message
 
     public function getMessage()
     {
-        if (isset($_SESSION["msg"])) {
-            return $_SESSION["msg"];
+        if (isset($_SESSION["msg"]) && $_SESSION["type"]) {
+            return [$_SESSION["msg"], $_SESSION["type"]];
         } else {
             return "";
         }
