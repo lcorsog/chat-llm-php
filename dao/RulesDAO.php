@@ -41,6 +41,17 @@ class RulesDAO implements RulesDAOInterface
         }
     }
 
+    public function defineDefaultRules($user_id)
+    {
+        $rule = new Rules();
+        $rule->ruleName = "Assistent";
+        $rule->rules = "Você é um assistente generico";
+        $rule->user_id = $user_id;
+
+        $this->create($rule);
+    }
+
+
     // TODO: Implementar $authUser para verificar se o usuário é o dono do agente
     public function create(Rules $rules)
     {

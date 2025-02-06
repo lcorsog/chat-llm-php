@@ -23,38 +23,39 @@ $llmMessage = callGroqApi($message, $rule);
 
 
 
-<div class="items-center justify-center h-screen">
-    <div class="w-full max-w-lg items-center justify-center">
-        <form action="message_process.php" method="POST">
-            <div class="flex flex-col items-center justify-center">
-                <input type="text" name="message" placeholder="Enter your message here..." class="w-full p-2 text-center text-lg text-gray-800 bg-white rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none">
-                <button type="submit" class="mt-4 w-full p-2 text-center text-lg text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none">Send</button>
+<div class="flex flex-col h-screen p-4">
+    <!-- Chat messages container -->
+    <div class="flex-1 overflow-y-auto mb-4 bg-gray-50 border rounded-lg p-4">
+        <?php if ($_SESSION['message'] != ""): ?>
+            <!-- User message -->
+            <div class="flex justify-end mb-4">
+                <div class="bg-blue-500 text-white rounded-lg py-2 px-4 max-w-[70%]">
+                    <p class="text-sm"><?= htmlspecialchars($message) ?></p>
+                </div>
             </div>
+            <!-- LLM response -->
+            <div class="flex justify-start mb-4">
+                <div class="bg-gray-200 rounded-lg py-2 px-4 max-w-[70%]">
+                    <p class="text-sm text-gray-800"><?= htmlspecialchars($llmMessage) ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <!-- Message input form -->
+    <div class="bg-white rounded-lg shadow-md">
+        <form action="message_process.php" method="POST" class="flex gap-2 p-2">
+            <input
+                type="text"
+                name="message"
+                placeholder="Type your message..."
+                class="flex-1 p-2 text-gray-800 bg-gray-50 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+                required>
+            <button
+                type="submit"
+                class="px-6 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-200">
+                Send
+            </button>
         </form>
     </div>
-    <div>
-        <div class="flex flex-col items-center justify-center bg-gray-100 rounded-lg shadow-lg mt-4">
-            <div id="user-message" class="flex flex-col items-center justify-center" class="w-full max-w-lg bg-gray-100 rounded-lg shadow-lg mt-4">
-                <p class="text-center text-lg text-gray-800 font-bold"><?= htmlspecialchars($message) ?></p>
-            </div>
-            <div id="llm-message" class="flex flex-col mr-auto">
-                <?php if ($_SESSION['message'] != ""): ?>
-                    <p class="text-center text-lg text-gray-800"><?= htmlspecialchars($llmMessage) ?></p>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
 </div>
-
-
-<!-- TESTANDO UM NOVO LAYOUT -->
-<!-- <div class=" rounded-lg h-screen items-center justify-center m-10">
-    <div class="bg-gray-100 h-3/6 rounded-lg shadow-lg">
-
-    </div>
-    <div class=" h-12 flex">
-        <input type="text" name="message" placeholder="Enter your message here..." class="w-5/6 p-2 text-lg text-gray-800 bg-white rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none items-center justify-center">
-        <button class="w-1/6 bg-blue-200 font-bold text-lg text-white rounded-lg hover:bg-blue-300 focus:outline-none items-center justify-center">Enviar</button>
-    </div>
-
-</div> -->
