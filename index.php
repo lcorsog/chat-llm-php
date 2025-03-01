@@ -58,8 +58,8 @@ if (empty($rules) && $userData) {
                         <td class="px-6 py-4">
                             <div class="flex justify-end gap-3">
                                 <a href="<?= $BASE_URL ?>rules.php" class="text-blue-600 hover:text-blue-800 font-medium">Editar</a>
-                                <a href="whats.php" class="text-yellow-600 hover:text-yellow-800 font-medium">Desconectar</a>
-                                <a href="#" class="text-red-600 hover:text-red-800 font-medium">Excluir</a>
+                                <a href="<?= $BASE_URL ?>whats.php" class="text-yellow-600 hover:text-yellow-800 font-medium">Conectar</a>
+                                <a href="<?= $BASE_URL ?>kill.php" class="text-red-600 hover:text-red-800 font-medium">Desconectar</a>
                             </div>
                         </td>
                     </tr>

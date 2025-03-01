@@ -42,13 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
 
     $rule = new Rules();
     if (!empty($rules) && !empty($ruleName)) {
-        echo "dentro do if";
-
 
         $rule->rules = $rules;
         $rule->ruleName = $ruleName;
         $rule->user_id = $userData->id;
-        print_r($rule);
         $rulesDao->update($rule);
     } else {
         $message->setMessage("Faltam informações", "error", "back");

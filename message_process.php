@@ -15,29 +15,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
 
 
 // Responde a mensagem com LLM e envia para o index.php
-function callGroqApi($message, $rule)
+function callGroqApi($message, $rule, $history = [])
 {
     $config = parse_ini_file(__DIR__ . '/.env');
     $key = $config['API_KEY'];
-
     $apiKey = $key;
     $apiUrl = "https://api.groq.com/openai/v1/chat/completions";
 
+    // Preparar mensagens com histórico
+    $messages = $history;
 
+    // Adicionar a regra do sistema
+    array_unshift($messages, [
+        "role" => "system",
+        "content" => $rule
+    ]);
 
-    // Dados para enviar para a API
+    // Adicionar a mensagem atual se não estiver no histórico
+    if (!isset($history[count($history) - 1]) || $history[count($history) - 1]['content'] !== $message) {
+        $messages[] = [
+            "role" => "user",
+            "content" => $message
+        ];
+    }
+
     $data = [
         "model" => "llama-3.3-70b-versatile",
-        "messages" => [
-            [
-                "role" => "user",
-                "content" => $message
-            ],
-            [
-                "role" => "system",
-                "content" => $rule
-            ]
-        ],
+        "messages" => $messages
     ];
     // Configuração da requisição cURL
     $ch = curl_init($apiUrl);
